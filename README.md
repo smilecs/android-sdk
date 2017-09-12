@@ -107,7 +107,7 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
 
 Inside TrueProfile class there are 2 important fields, payload and signature. Payload is a Base64 encoding of the json object containing all profile info of the user. Signature contains the payload's signature. You can forward these fields back to your backend and verify the authenticity of the information by:
 
-1. Fetch Truecaller public keys using this api: http://api4.truecaller.com/v1/key (you need to fetch the keys only if you have never done it or if you cannot verify the signature with any of the already cached keys);
+1. Fetch Truecaller public keys using this api: https://api4.truecaller.com/v1/key (you need to fetch the keys only if you have never done it or if you cannot verify the signature with any of the already cached keys);
 2. Loop through the public keys and try to verify the signature and payload;
 
 IMPORTANT: TrueSDK already verifies the authenticity of the response before forwarding it to the your app.
