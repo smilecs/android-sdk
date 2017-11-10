@@ -16,8 +16,8 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
 
 ### Android Studio Setup
 
-1. Ensure that your Minimum SDK is API 15: Android 4.0.3;
-2. Add the provided truesdk-0.5.aar file into your libs folder. Example path: /app/libs/ ;
+1. Ensure that your Minimum SDK is API 16: Android 4.1;
+2. Add the provided truesdk-0.6.aar file into your libs folder. Example path: /app/libs/ ;
 3. Open the build.gradle of your application module and firstly ensure that your lib folder can be used as a repository:
 
     ```java
@@ -32,7 +32,7 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
 
     ```java
     dependencies {
-        compile(name: "truesdk-0.5", ext: "aar")
+        compile(name: "truesdk-0.6", ext: "aar")
     }
     ```
 
@@ -81,7 +81,7 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
      ```java
      mTrueClient = new TrueClient(Context, ITrueCallback);
      ```
-    
+    (Optional) You can set an unique requestID for every profile request with `mTrueClient.setRequestNonce(customHash);`
 	- Provide to the TrueButton the created TrueClient:
 
       ```java
@@ -89,7 +89,7 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
       ```
     
       The TrueButton knows whether it is usable or not: ((TrueButton) findViewById(R.id.com_truecaller_android_sdk_truebutton)).isUsable(); This can be used as a strategy for hiding the button.
-   - Add in the onActivityResult methos the following condition:
+   - Add in the onActivityResult method the following condition:
 
       ```java
       if (mTrueClient.onActivityResult(requestCode, resultCode, data)) {
@@ -114,9 +114,9 @@ IMPORTANT: TrueSDK already verifies the authenticity of the response before forw
 
 #### B. Request-Response correlation check
 
-Every request sent via a Truecaller app that supports TrueSDK 0.5 has a unique identifier. This identifier is bundled into the response for assuring a correlation between a request and a response. If you want you can check this correlation yourself by:
+Every request sent via a Truecaller app that supports TrueSDK 0.6 has a unique identifier. This identifier is bundled into the response for assuring a correlation between a request and a response. If you want you can check this correlation yourself by:
 
-1. Generate the request identifier via the TrueClient: mTrueClient.generateRequestNonce();
-2. In ITrueCallback.onSuccesProfileShared(TrueProfile) verify that the previously generated identifier matches the one in TrueProfile.requestNonce.
+1. Generate the request identifier via the TrueClient: `mTrueClient.generateRequestNonce();` or use your own Nonce set with `mTrueClient.setRequestNonce(customHash);`
+2. `In ITrueCallback.onSuccesProfileShared(TrueProfile)` verify that the previously generated identifier matches the one in TrueProfile.requestNonce.
 
 IMPORTANT: TrueSDK already verifies the Request-Response correlation before forwarding it to the your app.
