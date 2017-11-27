@@ -46,10 +46,32 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
     ...
     </application>
     ```
+6. Open your App level gradle file and add this:
+        
+        ```
+    signingConfigs{
+        config {
+            keyAlias 'keyealias'
+            keyPassword 'keypassword'
+            storePassword 'storepassword'
+            storeFile file('yourfile.jks')
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.config
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            signingConfig signingConfigs.config
+        }
+    } ```
+    
+  ensure that your keystore.jks file is within the /app directory, this is essential so both your release and debug app share the same fingerprint.
+7. Add the TrueButton view in the selected layout:
 
-6. Add the TrueButton view in the selected layout:
-
-    ```java
+  ```java
     <!--
     You can have only one TrueButton per Activity
     Android Studio should offer auto complete for the truesdk:truebutton_text values
@@ -72,7 +94,7 @@ Once we have received the package name and the SHA-1 signing-fingerprint, we wil
     truesdk:truebutton_text="autoFill"/>
     ```
 
-7. In your selected Activity
+8. In your selected Activity
 
    - Either make your Activity implement ITrueCallback or create an instance. This interface has 2 method: onSuccesProfileShared(TrueProfile) and onFailureProfileShared(TrueError).
     
